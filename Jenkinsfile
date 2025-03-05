@@ -1,50 +1,25 @@
 pipeline {
     agent any
 
-    environment {
-        ARDUINO_CLI = 'C:\\Users\\P PUJA\\Downloads\\arduino-cli_1.2.0_Windows_64bit\\arduino-cli.exe' 
-        BOARD_FQBN = 'arduino:avr:uno'
-        SKETCH_NAME = 'Blink.ino'
-        GIT_REPO = 'https://github.com/pujaperumal/arduino-ci-cd.git'
-        GIT_BRANCH = 'main'
-        CMD_PATH = 'C:\\Windows\\System32\\cmd.exe'
-    }
-
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
-                script {
-                    echo 'Checking out latest code from GitHub...'
-                    git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
-                }
+                git branch: 'main', url: 'https://github.com/pujaperumal/Arduino-CI.git'
             }
         }
 
-        stage('Validate Sketch') {
+        stage('Install Arduino CLI') {
             steps {
-                script {
-                    echo 'Validating Arduino sketch syntax...'
-                    bat "\"${CMD_PATH}\" /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} --warnings all ${SKETCH_NAME}\""
-                }
+                sh 'curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh'
             }
         }
 
         stage('Compile Sketch') {
             steps {
-                script {
-                    echo 'Compiling the Arduino sketch...'
-                    bat "\"${CMD_PATH}\" /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} ${SKETCH_NAME}\""
-                }
+                sh 'arduino-cli compile --fqbn arduino:avr:uno Arduino-CI.ino'
             }
         }
-    }
 
-    post {
-        success {
-            echo '✅ Build succeeded! Arduino sketch compiled successfully.'
-        }
-        failure {
-            echo '❌ Build failed! Check the logs for errors.'
-        }
+        
     }
 }
