@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        ARDUINO_CLI = 'arduino-cli' // Assuming it's in the system PATH
-        BOARD_FQBN = 'arduino:avr:uno' // Set the board type
-        SKETCH_NAME = 'Blink.ino' // Change to match your file
-        GIT_REPO = 'https://github.com/pujaperumal/arduino-ci-cd.git' // Your GitHub repo
-        GIT_BRANCH = 'main' // Change branch if needed
+        ARDUINO_CLI = 'C:\\Users\\P PUJA\\Downloads\\arduino-cli_1.2.0_Windows_64bit\\arduino-cli.exe' 
+        BOARD_FQBN = 'arduino:avr:uno'
+        SKETCH_NAME = 'Blink.ino'
+        GIT_REPO = 'https://github.com/pujaperumal/arduino-ci-cd.git'
+        GIT_BRANCH = 'main'
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     echo 'Validating Arduino sketch syntax...'
-                    bat "${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} --warnings all ${SKETCH_NAME}"
+                    bat "cmd.exe /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} --warnings all ${SKETCH_NAME}\""
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 script {
                     echo 'Compiling the Arduino sketch...'
-                    bat "${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} ${SKETCH_NAME}"
+                    bat "cmd.exe /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} ${SKETCH_NAME}\""
                 }
             }
         }
