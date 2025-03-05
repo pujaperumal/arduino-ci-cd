@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        ARDUINO_CLI = "C:\\arduino-cli\\arduino-cli.exe"  // Update with actual path
+        ARDUINO_CLI = "C:\Users\P PUJA\Downloads\arduino-cli_1.2.0_Windows_64bit\arduino-cli.exe"  // Update with actual path
         SKETCH_NAME = "Blink"
     }
 
