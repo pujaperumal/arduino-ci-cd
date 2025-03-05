@@ -7,6 +7,7 @@ pipeline {
         SKETCH_NAME = 'Blink.ino'
         GIT_REPO = 'https://github.com/pujaperumal/arduino-ci-cd.git'
         GIT_BRANCH = 'main'
+        CMD_PATH = 'C:\\Windows\\System32\\cmd.exe'
     }
 
     stages {
@@ -23,7 +24,7 @@ pipeline {
             steps {
                 script {
                     echo 'Validating Arduino sketch syntax...'
-                    bat "cmd.exe /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} --warnings all ${SKETCH_NAME}\""
+                    bat "\"${CMD_PATH}\" /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} --warnings all ${SKETCH_NAME}\""
                 }
             }
         }
@@ -32,7 +33,7 @@ pipeline {
             steps {
                 script {
                     echo 'Compiling the Arduino sketch...'
-                    bat "cmd.exe /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} ${SKETCH_NAME}\""
+                    bat "\"${CMD_PATH}\" /c \"${ARDUINO_CLI} compile --fqbn ${BOARD_FQBN} ${SKETCH_NAME}\""
                 }
             }
         }
