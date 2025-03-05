@@ -14,15 +14,17 @@ pipeline {
             steps {
                 script {
                     // Check if Arduino CLI is already installed
-                    def arduinoCliInstalled = sh(script: 'command -v arduino-cli', returnStatus: true) == 0
+                    def arduinoCliInstalled = bat(script: 'where arduino-cli', returnStatus: true) == 0
                     if (!arduinoCliInstalled) {
-                        sh 'curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh'
+                        // Download and install Arduino CLI
+                        bat 'curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh -o install.sh'
+                        bat 'bash install.sh'
                     } else {
                         echo 'Arduino CLI is already installed.'
                     }
 
                     // Set up Arduino CLI (install board packages)
-                    sh 'arduino-cli core install arduino:avr'
+                    bat 'arduino-cli core install arduino:avr'
                 }
             }
         }
@@ -33,7 +35,7 @@ pipeline {
                 script {
                     // Compile the sketch for Arduino Uno
                     def sketchFile = 'Arduino-CI.ino' // Replace with your actual sketch file name
-                    def compileResult = sh(script: "arduino-cli compile --fqbn arduino:avr:uno ${sketchFile}", returnStatus: true)
+                    def compileResult = bat(script: "arduino-cli compile --fqbn arduino:avr:uno ${sketchFile}", returnStatus: true)
                     
                     // Fail the pipeline if compilation fails
                     if (compileResult != 0) {
