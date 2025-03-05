@@ -5,7 +5,7 @@ pipeline {
         // Stage 1: Clone the repository
         stage('Clone Repository') {
             steps {
-                checkout scm // Dynamically checks out the repository configured in the Jenkins job
+                checkout scm
             }
         }
 
@@ -16,9 +16,11 @@ pipeline {
                     // Check if Arduino CLI is already installed
                     def arduinoCliInstalled = bat(script: 'where arduino-cli', returnStatus: true) == 0
                     if (!arduinoCliInstalled) {
-                        // Download and install Arduino CLI
-                        bat 'curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh -o install.sh'
-                        bat 'bash install.sh'
+                        // Download and install Arduino CLI using PowerShell
+                        powershell '''
+                            Invoke-WebRequest -Uri "https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh" -OutFile "install.sh"
+                            bash install.sh
+                        '''
                     } else {
                         echo 'Arduino CLI is already installed.'
                     }
